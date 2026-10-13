@@ -315,31 +315,52 @@ function processPayment() {
     return;
   }
 
-  // Validation 2: Customer details
-  if (studentNameInput.value.trim() === "") {
+  // Validation 2: Customer name (letters only)
+  // Allowed: letters (including accents like ñ), spaces, periods, hyphens, apostrophes
+  // Examples that pass: "Juan Dela Cruz", "Ma. Cristina", "O'Brien", "Anne-Marie"
+  const customerName = studentNameInput.value.trim();
+
+  if (customerName === "") {
     alert("Please enter the customer name.");
+    studentNameInput.focus();
     return;
   }
 
-  if (studentIdInput.value.trim() === "") {
+  if (!/^\p{L}[\p{L}\s.'-]*$/u.test(customerName)) {
+    alert("Name must contain letters only. Numbers and special symbols are not allowed.");
+    studentNameInput.focus();
+    return;
+  }
+
+  // Validation 3: Student ID (numbers only)
+  const studentId = studentIdInput.value.trim();
+
+  if (studentId === "") {
     alert("Please enter the student ID.");
+    studentIdInput.focus();
     return;
   }
 
-  // Validation 3: Payment method
+  if (!/^\d+$/.test(studentId)) {
+    alert("Student ID must contain numbers only.");
+    studentIdInput.focus();
+    return;
+  }
+
+  // Validation 4: Payment method
   if (paymentMethodSelect.value === "") {
     alert("Please choose a payment method.");
     return;
   }
 
-  // Validation 4: Payment must be a valid, non-negative number.
+  // Validation 5: Payment must be a valid, non-negative number.
   // Blank, spaces only, non-numeric, and negative amounts all fail here.
   if (amountPaidInput === "" || !isFinite(amountPaid) || amountPaid < 0) {
     alert("Please enter a valid payment amount.");
     return;
   }
 
-  // Validation 5: Payment must cover the order total.
+  // Validation 6: Payment must cover the order total.
   // Exact payments and overpayments pass this check.
   if (amountPaid < total) {
     alert("Insufficient payment. Please enter at least " + formatPrice(total) + ".");
@@ -347,6 +368,21 @@ function processPayment() {
   }
 
   const change = amountPaid - total;
+
+  // Payment confirmation: ask the cashier to confirm before the receipt is made.
+  // If they cancel, nothing is saved and the order stays open.
+  const confirmed = confirm(
+    "Confirm payment?\n\n" +
+    "Total: " + formatPrice(total) + "\n" +
+    "Payment method: " + paymentMethodLabel(paymentMethodSelect.value) + "\n" +
+    "Amount paid: " + formatPrice(amountPaid) + "\n" +
+    "Change: " + formatPrice(change) + "\n\n" +
+    "Press OK to confirm and print the receipt."
+  );
+
+  if (!confirmed) {
+    return;
+  }
 
   generateReceipt(amountPaid, change);
 
@@ -357,10 +393,12 @@ function processPayment() {
 // Create receipt
 function generateReceipt(amountPaid, change) {
 
+  const transactionNo = generateTransactionNumber();
+
   let receiptHTML = `
     <h3>Campus Cafeteria</h3>
 
-    <p>Transaction No: ${generateTransactionNumber()}</p>
+    <p>Transaction No: ${transactionNo}</p>
     <p>Date: ${new Date().toLocaleString()}</p>
     <p>Customer: ${studentNameInput.value.trim()}</p>
     <p>Student ID: ${studentIdInput.value.trim()}</p>
@@ -394,12 +432,21 @@ function generateReceipt(amountPaid, change) {
     <p>Amount Paid: ${formatPrice(amountPaid)}</p>
     <p>Change: ${formatPrice(change)}</p>
 
-    <p>Payment successful!</p>
+    <div class="payment-confirmed" role="status">
+      <strong>&#10004; Payment confirmed</strong>
+      <span>Order ${transactionNo} has been paid in full.
+      Please give the customer ${formatPrice(change)} change.</span>
+    </div>
 
     <button onclick="newTransaction()">New Transaction</button>
   `;
 
   receiptContent.innerHTML = receiptHTML;
+
+  // Make sure the confirmation is visible (helpful on small screens)
+  if (receiptContent.scrollIntoView) {
+    receiptContent.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
 }
 
 // Reset everything for the next customer
