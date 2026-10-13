@@ -1,0 +1,318 @@
+/* =====================================================
+   CampusCafeteriaPOS - style.css
+   Palette: https://colorhunt.co/palette/8e1ea2c654c3ed96d7ffc0de
+   ===================================================== */
+
+/* ---------- 1. Color and size settings ----------
+   Change a value here and it updates everywhere. */
+:root {
+  /* The four palette colors */
+  --plum: #D6336C;          /* main color: header, buttons, headings */
+  --orchid: #FF4081;        /* accent: hover borders, focus outline */
+  --pink: #FFB6C1;          /* soft accent: underlines, dashed lines */
+  --blush: #ffc0de;         /* lightest: table header, highlights */
+
+  /* Supporting shades made from the palette */
+  --plum-dark: #FF4081;     /* button hover (keeps white text readable) */
+  --page-bg: #fff5fa;       /* very light blush for the page */
+  --card-bg: #ffffff;
+  --border: #f1cde3;
+  --text: #c20560;          /* dark plum for body text */
+  --text-soft: #c20560;
+  --radius: 8px;
+}
+
+/* ---------- 2. Basic setup ---------- */
+* {
+  box-sizing: border-box;   /* padding no longer makes boxes wider */
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--page-bg);
+  color: var(--text);
+  line-height: 1.5;
+}
+
+/* ---------- 3. Header ---------- */
+header {
+  background-color: var(--plum);
+  color: #ffffff;
+  padding: 24px 20px;
+  text-align: center;
+  border-bottom: 6px solid var(--pink);
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+header p {
+  margin: 6px 0 0;
+  font-size: 1rem;
+  color: var(--blush);
+}
+
+/* ---------- 4. Page layout (desktop) ----------
+   main is a grid with 2 columns:
+   - Menu takes the full width
+   - Current order and Order summary sit side by side
+   - Payment and Receipt sit side by side */
+main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 20px;
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 20px;
+  align-items: start;
+}
+
+#product-list {
+  grid-column: 1 / -1;      /* span both columns */
+}
+
+/* ---------- 5. Section boxes ---------- */
+section {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+}
+
+section h2 {
+  margin: 0 0 18px;
+  font-size: 1.3rem;
+  color: var(--plum);
+  border-bottom: 3px solid var(--pink);
+  padding-bottom: 8px;
+}
+
+/* ---------- 6. Menu cards ---------- */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 16px;
+}
+
+/* Category headings (Rice, Viands, Drinks) */
+.category-title {
+  grid-column: 1 / -1;      /* heading takes the full row */
+  margin: 8px 0 0;
+  padding-left: 10px;
+  font-size: 1.1rem;
+  color: var(--plum);
+  border-left: 5px solid var(--orchid);
+}
+
+.category-title:first-child {
+  margin-top: 0;
+}
+
+.product {
+  background-color: #fffafd;
+  border: 1px solid var(--border);
+  border-top: 4px solid var(--plum);
+  border-radius: var(--radius);
+  padding: 18px 14px;
+  text-align: center;
+}
+
+.product:hover {
+  border-color: var(--orchid);
+  border-top-color: var(--orchid);
+  background-color: #fff0f8;
+}
+
+.product h4 {
+  margin: 0 0 6px;
+  font-size: 1.05rem;
+}
+
+.product .price {
+  margin: 0 0 14px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: var(--plum);
+}
+
+/* ---------- 7. Buttons ---------- */
+button {
+  background-color: var(--plum);
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 16px;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: var(--plum-dark);
+}
+
+/* Visible outline when using the keyboard */
+button:focus,
+input:focus,
+select:focus {
+  outline: 3px solid var(--orchid);
+}
+
+/* Disabled button (the minus button when quantity is 1) */
+button:disabled {
+  background-color: var(--pink);
+  color: #ffffff;
+  cursor: not-allowed;
+}
+
+/* Quantity controls in the order table */
+.qty-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.qty-btn {
+  padding: 4px 11px;
+  font-size: 1rem;
+}
+
+.qty-number {
+  min-width: 20px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Remove button: outlined so it looks different from the main buttons */
+.remove-btn {
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  background-color: #ffffff;
+  color: var(--plum);
+  border: 2px solid var(--plum);
+}
+
+.remove-btn:hover {
+  background-color: var(--blush);
+}
+
+/* Place order button is wider */
+#payment #place-order {
+  width: 100%;
+  max-width: 400px;
+  padding: 12px;
+  font-size: 1rem;
+}
+
+/* ---------- 8. Order table ---------- */
+.table-wrapper {
+  overflow-x: auto;         /* scrolls if the table is too wide */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+th {
+  background-color: var(--blush);
+  color: var(--plum-dark);
+}
+
+.empty-cart {
+  padding: 24px 10px;
+  text-align: center;
+  color: var(--text-soft);
+}
+
+/* ---------- 9. Order summary ---------- */
+.summary-line {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+}
+
+.summary-total {
+  margin-top: 8px;
+  padding-top: 12px;
+  border-top: 2px solid var(--plum);
+  font-size: 1.15rem;
+  font-weight: bold;
+  color: var(--plum);
+}
+
+/* ---------- 10. Payment form ---------- */
+.form-group {
+  margin-bottom: 16px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input,
+select {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px;
+  border: 1px solid var(--pink);
+  border-radius: 5px;
+  font-size: 1rem;
+  color: var(--text);
+  background-color: #ffffff;
+}
+
+/* ---------- 11. Receipt ---------- */
+.receipt {
+  padding: 20px;
+  border: 2px dashed var(--pink);
+  border-radius: var(--radius);
+  background-color: #fffafd;
+}
+
+.receipt h3 {
+  margin: 0 0 12px;
+  text-align: center;
+  color: var(--plum);
+}
+
+.receipt p {
+  margin: 4px 0;
+}
+
+.receipt hr {
+  margin: 14px 0;
+  border: none;
+  border-top: 1px dashed var(--pink);
+}
+
+.receipt button {
+  margin-top: 10px;
+}
+
+/* ---------- 12. Footer ---------- */
+footer {
+  padding: 18px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-soft);
+}
+
+/* ---------- 13. Smaller screens ----------
+   On narrow windows, stack everything in one column. */
+@media (max-width: 800px) {
+  main {
+    grid-template-columns: 1fr;
+  }
+}

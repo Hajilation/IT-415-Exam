@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CampusCafeteriaPOS</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- ================= HEADER ================= -->
+  <header>
+    <h1>CampusCafeteriaPOS</h1>
+    <p>Walk-up counter: take lunch orders for rice meals, viands, snacks, and drinks</p>
+  </header>
+
+  <main>
+
+    <!-- ================= 1. MENU ================= -->
+    <section id="product-list">
+      <h2>Menu</h2>
+
+      <div id="product-grid" class="product-grid">
+
+        <h3 class="category-title">Rice</h3>
+
+        <div class="product" data-name="Rice (Plain)" data-price="15" data-category="Rice">
+          <h4>Rice (Plain)</h4>
+          <p class="price">₱15.00</p>
+          <button>Add to order</button>
+        </div>
+
+
+        <h3 class="category-title">Viands</h3>
+
+        <div class="product" data-name="Fried Chicken (1 pc)" data-price="65" data-category="Viands">
+          <h4>Fried Chicken (1 pc)</h4>
+          <p class="price">₱65.00</p>
+          <button>Add to order</button>
+        </div>
+
+        <div class="product" data-name="Pork Adobo" data-price="60" data-category="Viands">
+          <h4>Pork Adobo</h4>
+          <p class="price">₱60.00</p>
+          <button>Add to order</button>
+        </div>
+
+        <div class="product" data-name="Vegetable Side Dish" data-price="35" data-category="Viands">
+          <h4>Vegetable Side Dish</h4>
+          <p class="price">₱35.00</p>
+          <button>Add to order</button>
+        </div>
+
+
+        <h3 class="category-title">Drinks</h3>
+
+        <div class="product" data-name="Iced Tea (cup)" data-price="20" data-category="Drinks">
+          <h4>Iced Tea (cup)</h4>
+          <p class="price">₱20.00</p>
+          <button>Add to order</button>
+        </div>
+
+        <div class="product" data-name="Bottled Water" data-price="20" data-category="Drinks">
+          <h4>Bottled Water</h4>
+          <p class="price">₱20.00</p>
+          <button>Add to order</button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= 2. CURRENT ORDER ================= -->
+    <section id="shopping-cart">
+      <h2>Current order</h2>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Subtotal</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="cart-body">
+            <!-- Rows will be added by JavaScript later. -->
+
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ================= 3. ORDER SUMMARY ================= -->
+    <section id="order-summary">
+
+      <h2>Order summary</h2>
+
+      <div class="summary-line">
+        <span>Number of items</span>
+        <span id="summary-items">0</span>
+      </div>
+
+      <div class="summary-line">
+        <span>Subtotal</span>
+        <span id="summary-subtotal">₱0.00</span>
+      </div>
+
+      <div class="summary-line summary-total">
+        <span>Total</span>
+        <span id="summary-total">₱0.00</span>
+      </div>
+
+    </section>
+
+    <!-- ================= 4. PAYMENT SECTION ================= -->
+    <section id="payment">
+      <h2>Payment</h2>
+
+      <div class="form-group">
+        <label for="student-name">Customer name</label>
+        <input type="text" id="student-name" placeholder="Enter student's full name">
+      </div>
+
+      <div class="form-group">
+        <label for="student-id">Student ID</label>
+        <input type="text" id="student-id" placeholder="Enter student ID">
+      </div>
+
+      <div class="form-group">
+        <label for="order-type">Order type</label>
+        <select id="order-type">
+          <option value="dine-in">Dine-in</option>
+          <option value="take-out">Take-out</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="payment-method">Payment method</label>
+        <select id="payment-method">
+          <option value="">Choose a payment method</option>
+          <option value="cash">Cash</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="amount-paid">Amount paid</label>
+        <input type="number" id="amount-paid" placeholder="0.00">
+      </div>
+
+      <div class="summary-line">
+        <span>Change</span>
+        <span id="summary-change">₱0.00</span>
+      </div>
+
+      <button id="place-order">
+        Place order
+      </button>
+    </section>
+
+    <!-- ================= 5. RECEIPT SECTION ================= -->
+    <section id="receipt">
+      <h2>Receipt</h2>
+      <div class="receipt" id="receipt-content">
+        <h3>Campus Cafeteria</h3>
+        <p>No transaction yet.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    CampusCafeteriaPOS &copy; 2026
+  </footer>
+
+  <script src="script.js"></script>
+
+</body>
+</html>
