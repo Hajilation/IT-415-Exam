@@ -17,6 +17,10 @@ const products = [
 // Each order item looks like: { id, name, price, quantity }
 let cart = [];
 
+// Tracks whether the current order has already been paid and receipted.
+// false = order is still open, true = already paid (start a new transaction)
+let isPaymentCompleted = false;
+
 // ---------- 2. Find the parts of the page we need ----------
 const productGrid     = document.getElementById("product-grid");
 const cartBody        = document.getElementById("cart-body");
@@ -295,7 +299,13 @@ function paymentMethodLabel(value) {
 // Process payment
 function processPayment() {
 
-  const amountPaidInput = amountPaidField.value;
+  // Stop duplicate payments and receipts for the same order
+  if (isPaymentCompleted) {
+    alert("This order has already been paid. Please start a new transaction.");
+    return;
+  }
+
+  const amountPaidInput = amountPaidField.value.trim();
   const amountPaid = Number(amountPaidInput);
   const total = calculateTotal();
 
@@ -322,33 +332,26 @@ function processPayment() {
     return;
   }
 
-  // Validation 4: Empty amount
-  if (amountPaidInput === "") {
-    alert("Please enter payment amount.");
+  // Validation 4: Payment must be a valid, non-negative number.
+  // Blank, spaces only, non-numeric, and negative amounts all fail here.
+  if (amountPaidInput === "" || !isFinite(amountPaid) || amountPaid < 0) {
+    alert("Please enter a valid payment amount.");
     return;
   }
 
-  // Validation 5: Invalid number
-  if (isNaN(amountPaid)) {
-    alert("Payment must be a valid number.");
-    return;
-  }
-
-  // Validation 6: Negative
-  if (amountPaid < 0) {
-    alert("Payment cannot be negative.");
-    return;
-  }
-
-  // Validation 7: Insufficient
+  // Validation 5: Payment must cover the order total.
+  // Exact payments and overpayments pass this check.
   if (amountPaid < total) {
-    alert("Insufficient payment.");
+    alert("Insufficient payment. Please enter at least " + formatPrice(total) + ".");
     return;
   }
 
   const change = amountPaid - total;
 
   generateReceipt(amountPaid, change);
+
+  // Reached only if every validation passed and the receipt was created
+  isPaymentCompleted = true;
 }
 
 // Create receipt
@@ -403,6 +406,7 @@ function generateReceipt(amountPaid, change) {
 function newTransaction() {
 
   cart = [];
+  isPaymentCompleted = false;
 
   studentNameInput.value = "";
   studentIdInput.value = "";
